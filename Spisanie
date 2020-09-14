@@ -1,0 +1,302 @@
+//spisanie knig
+ 
+#include <iostream>
+#include <cstdlib>
+#include <cstdio>
+#include <ctime>
+#include <vector>
+#include <string.h>
+#include <string>
+#include <algorithm>
+ 
+using namespace std;
+ 
+ 
+class Filial{  //7
+public:
+    string Name, Adr;  //nazvanie, adres
+    int ID_Fil;    //PK
+    Filial(int num){  //nomer=0,...,6
+    string A[]={"Zaria","Voshod", "Avrora", "Rassvet","Luch","Solntse","Chernaya dira"};
+    string B[]={"Zarechnaya,7","Leninsky,25","Profsoyusnaya, 5","Novaya pl.,15","Dvortsovaya pl.,1","Tverskaya, 32","Kuznetsky Most, 6"};
+    Name=A[num];
+    Adr=B[num];
+    ID_Fil=num;
+    };
+    ~Filial(){;}
+};
+ 
+class TableOfFil{
+public:
+    vector<Filial> Table;
+    TableOfFil(){
+        for(int i=0;i<7;++i){
+            Filial c(i);
+            Table.push_back(c);
+        }
+    }
+    ~TableOfFil(){;}
+};
+ 
+class Sotrudnik{  //20
+public:
+    string Name, Surname, Pos;
+    int ID_Sotr; //PK
+    int ID_Fil;  //FK
+    Sotrudnik(){;}
+    Sotrudnik(int num){  //nomer sortudnika dlia PK ot 0 do 14
+    string A[7]={"Belih","Adler","Lebed","Volk","Einstein","Goldberg","Brandybuck"};
+    string B[7]={"Anastasia","Maya","Elena","Albert","Ivan","Michael","Meriadoc"};
+    string C[2]={"librarian", "custodian of funds"};
+    Surname=A[rand()%7];
+    Name=B[rand()%7];
+    Pos=C[rand()%2];
+    ID_Sotr=num;
+    }
+    ~Sotrudnik(){;}
+};
+ 
+class TableOfSotr{
+public:
+    vector<Sotrudnik> Table;
+    TableOfSotr(){
+ 
+    for(int i=0;i<20;++i){
+       Sotrudnik c(i);
+       Table.push_back(c);
+    }
+ 
+    int i=0;
+    for(int k=0;k<6;k++){
+        int l=rand()%5+1;
+        for(int j=0;j<l;++j){
+            if(i+j>=20)
+                break;
+            Table[i+j].ID_Fil=k;
+        }
+        i=i+l;
+    }
+    if(i<20){
+        for(i;i<20;++i){
+            Table[i].ID_Fil=6;
+        }
+    }
+    }
+    ~TableOfSotr(){;}
+};
+ 
+class Spisanie{  //7
+public:
+    string Data;
+    int ID_Sp; //PK
+    int ID_Sotr, ID_Fil;  //FK sotrudnika i filiala
+    Spisanie(int num){
+    string A[7]={"17.03.1992","27.02.2018","25.06.2001","12.09.1998","05.05.2005","04.07.2011","19.08.1999"};
+    Data=A[num];
+    ID_Sp=num;
+    }
+    ~Spisanie(){;}
+};
+ 
+class TableOfSp{  //7
+public:
+    vector<Spisanie> Table;
+    TableOfSp(){
+    for(int i=0;i<7;++i){
+       Spisanie c(i);
+       Table.push_back(c);
+    }
+    int i=0;
+    for(int k=0;k<19;k++){
+        int l=rand()%3+1;
+        for(int j=0;j<l;++j){
+            if(i+j>=7)
+                break;
+            Table[i+j].ID_Sotr=k;
+        }
+        i=i+l;
+    }
+    if(i<7){
+        for(i;i<7;++i){
+            Table[i].ID_Sotr=19;
+        }
+    }
+    }
+    ~TableOfSp(){;}
+};
+ 
+class Spisanie_str{  //20
+public:
+    int ID_Sp_str; //PK
+    int ID_Sp, ID_Kn_eks;  //FK spisania i knigi-eksempliara
+    Spisanie_str(int num){
+    ID_Sp_str=num;
+    }
+    ~Spisanie_str(){;}
+};
+ 
+class TableOfSp_Str{
+public:
+    vector<Spisanie_str> Table;
+    TableOfSp_Str(){
+ 
+    for(int i=0;i<20;++i){
+       Spisanie_str c(i);
+       Table.push_back(c);
+    }
+    int i=0;
+    for(int k=0;k<19;k++){
+        int l=rand()%5+1;
+        for(int j=0;j<l;++j){
+            if(i+j>=20)
+                break;
+            Table[i+j].ID_Sp=k;
+        }
+        i=i+l;
+    }
+    if(i<20){
+        for(i;i<20;++i){
+            Table[i].ID_Sp=19;
+        }
+    }
+    i=0;
+    for(int k=0;k<19;k++){
+        int l=rand()%2+1;
+        for(int j=0;j<l;++j){
+            if(i+j>=20)
+                break;
+            Table[i+j].ID_Kn_eks=k;
+        }
+        i=i+l;
+    }
+    if(i<20){
+        for(i;i<20;++i){
+            Table[i].ID_Kn_eks=19;
+        }
+    }
+    }
+    ~TableOfSp_Str(){;}
+};
+ 
+class Kniga_op{ //7
+public:
+    string Avtor, Nazvanie;
+    int GodIsdania;
+    int ID_Kn_op; //PK
+    Kniga_op(int n){  //nomer sortudnika dlia PK ot 0 do 14
+    string A[7]={"Dostoyevsky","Tolstoy","Chekhov","Scott","Ostin","Darvin","Zorich"};
+    string B[7]={"Prestuplenie i nakasanie","Voina i mir","Rasskasy","Aivengo","Gordost' i predubezhdenie","Proishozhdenie vidov","Matem. analis"};
+    Avtor=A[n];
+    Nazvanie=B[n];
+    GodIsdania=rand()%35+1980;
+    ID_Kn_op=n;
+    }
+    ~Kniga_op(){;}
+};
+ 
+class TableOfKn_op{
+public:
+    vector<Kniga_op> Table;
+    TableOfKn_op(){
+        for(int i=0;i<7;++i){
+            Kniga_op c(i);
+            Table.push_back(c);
+        }
+    }
+    ~TableOfKn_op(){;}
+};
+ 
+class Kniga_eks {   //50
+public:
+    int ID_Kn_eks; //PK
+    int ID_Kn_op;   //FK
+    Kniga_eks(int n){
+    ID_Kn_eks=n;
+    }
+    ~Kniga_eks(){;}
+};
+ 
+class TableOfKn_eks{
+public:
+    vector<Kniga_eks> Table;
+    TableOfKn_eks(){
+    for(int i=0;i<50;++i){
+       Kniga_eks c(i);
+       Table.push_back(c);
+    }
+ 
+    int i=0;
+    for(int k=0;k<6;k++){
+        int l=rand()%11+1;
+        for(int j=0;j<l;++j){
+            if(i+j>=50)
+                break;
+            Table[i+j].ID_Kn_op=k;
+        }
+        i=i+l;
+    }
+    if(i<50){
+        for(i;i<50;++i){
+            Table[i].ID_Kn_op=6;
+        }
+    }
+    }
+    ~TableOfKn_eks(){;}
+};
+ 
+class All{
+public:
+    TableOfFil TFil;
+    TableOfSotr TSotr;
+    TableOfSp TSp;
+    TableOfSp_Str TSp_str;
+    TableOfKn_op TKn_op;
+    TableOfKn_eks TKn_eks;
+    All(){
+        FILE *f1, *f2, *f3, *f4, *f5, *f6;
+        f1=fopen("Filials.txt","w");
+        fprintf(f1,"PK  Name  Adres\n");
+        for(int i=0;i<7;i++){
+        fprintf(f1,"%d %s %s\n", TFil.Table[i].ID_Fil, TFil.Table[i].Name.c_str(), TFil.Table[i].Adr.c_str());
+        }
+        fclose(f1);
+        f2=fopen("Sotrudniki.txt","w");
+        fprintf(f2,"PK  Name  Surname Position  FK(Filial)\n");
+        for(int i=0;i<20;i++){
+        fprintf(f2,"%d %s %s %s %d\n", TSotr.Table[i].ID_Sotr, TSotr.Table[i].Name.c_str(), TSotr.Table[i].Surname.c_str(),TSotr.Table[i].Pos.c_str(), TSotr.Table[i].ID_Fil);
+        }
+        fclose(f2);
+        f3=fopen("Spisania.txt","w");
+        fprintf(f3,"PK  Data  FK(Sotrud.)  FK(Filial)\n");
+        for(int i=0;i<7;i++){
+        TSp.Table[i].ID_Fil=TSotr.Table[TSp.Table[i].ID_Sotr].ID_Fil;
+        fprintf(f3,"%d %s %d       %d\n", TSp.Table[i].ID_Sp, TSp.Table[i].Data.c_str(), TSp.Table[i].ID_Sotr, TSp.Table[i].ID_Fil);
+        }
+        fclose(f3);
+        f4=fopen("Stroki Spisaniy.txt","w");
+        fprintf(f4,"PK  FK(Spisanie)  FK(Eksempliar knigi)\n");
+        for(int i=0;i<20;i++){
+        fprintf(f4,"%d %d %d\n", TSp_str.Table[i].ID_Sp_str, TSp_str.Table[i].ID_Sp, TSp_str.Table[i].ID_Kn_eks);
+        }
+        fclose(f4);
+        f5=fopen("Knigi-opisania.txt","w");
+        fprintf(f5,"PK  Nazvanie  Avtor   God Izdania\n");
+        for(int i=0;i<7;i++){
+        fprintf(f5,"%d %s %s %d\n", TKn_op.Table[i].ID_Kn_op, TKn_op.Table[i].Nazvanie.c_str(), TKn_op.Table[i].Avtor.c_str(), TKn_op.Table[i].GodIsdania);
+        }
+        fclose(f5);
+        f6=fopen("Knigi-eks.txt","w");
+        fprintf(f6,"PK  FK(kniga-opisanie)\n");
+        for(int i=0;i<50;i++){
+        fprintf(f6,"%d  %d \n", TKn_eks.Table[i].ID_Kn_eks, TKn_eks.Table[i].ID_Kn_op);
+        }
+        fclose(f6);
+    }
+    ~All(){;}
+};
+ 
+int main(){
+srand(time(NULL));
+All A;
+return 0;
+}
